@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ room.name }} - Jonggrand Hotel</title>
+    <meta name="description" content="Book our Deluxe Room at Jonggrand Hotel. Enjoy premium amenities and comfort.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'assets/images/logo.png' %}" alt="Jonggrand Hotel Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{% url 'rooms' %}">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                    <li class="nav-item ms-2">
+                        <a href="{% url 'rooms' %}" class="btn btn-primary-custom">Book Now</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div class="bg-light py-3">
+        <div class="container">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'rooms' %}">Rooms</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Deluxe Room</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+
+    <!-- Room Detail Content -->
+    <section class="section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <!-- Gallery Carousel -->
+                    <div id="roomCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                        <div class="carousel-inner rounded">
+                            <div class="carousel-item active">
+                                <img src="{% static 'assets/images/IMG-20251206-WA0004.jpg' %}" class="d-block w-100" alt="Deluxe Room View 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'assets/images/IMG-20251206-WA0008.jpg' %}" class="d-block w-100" alt="Deluxe Room View 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{% static 'assets/images/IMG-20251206-WA0009.jpg' %}" class="d-block w-100" alt="Deluxe Room View 3">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#roomCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#roomCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                    <h2 class="mb-3">{{ room.name }}</h2>
+                    <p class="lead text-primary-custom fw-bold">${{ room.price_per_night }} <span class="text-muted fw-normal fs-6">/ night</span></p>
+                    
+                    <p>{{ room.description }}</p>
+                    
+                    <hr>
+
+                    <h4 class="mb-3">Amenities</h4>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 col-md-4">
+                            <i class="fas fa-wifi amenity-icon"></i> High-Speed Wifi
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <i class="fas fa-tv amenity-icon"></i> 55" Smart TV
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <i class="fas fa-wind amenity-icon"></i> Air Conditioning
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <i class="fas fa-coffee amenity-icon"></i> Coffee Maker
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <i class="fas fa-lock amenity-icon"></i> In-room Safe
+                        </div>
+                        <div class="col-6 col-md-4">
+                            <i class="fas fa-parking amenity-icon"></i> Free Parking
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <h4 class="mb-3">Room Availability</h4>
+                    <!-- Calendar Placeholder -->
+                    <div class="bg-light p-4 rounded text-center mb-4 border">
+                        <p class="mb-2"><strong>Check Availability for Deluxe Room</strong></p>
+                        <!-- A visual representation of a calendar would go here. For now, a simple grid. -->
+                        <div class="row g-1 justify-content-center">
+                            <div class="col-auto"><span class="badge bg-secondary m-1">1</span></div>
+                            <div class="col-auto"><span class="badge bg-secondary m-1">2</span></div>
+                            <div class="col-auto"><span class="badge bg-danger m-1" title="Booked">3</span></div>
+                            <div class="col-auto"><span class="badge bg-danger m-1" title="Booked">4</span></div>
+                            <div class="col-auto"><span class="badge bg-secondary m-1">5</span></div>
+                            <div class="col-auto"><span class="badge bg-secondary m-1">6</span></div>
+                            <div class="col-auto"><span class="badge bg-secondary m-1">7</span></div>
+                        </div>
+                        <small class="text-muted d-block mt-2">Grey: Available | Red: Booked</small>
+                        <small class="text-muted d-block mt-2">Integrate your backend availability API here.</small>
+                    </div>
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="card shadow-sm sticky-top" style="top: 100px;">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Book This Room</h4>
+                            {% if success %}
+                                <div class="alert alert-success">
+                                    Booking created successfully. Reference: {{ booking_reference }}. Total: {{ total_amount }}.
+                                </div>
+                            {% elif error %}
+                                <div class="alert alert-danger">
+                                    {{ error }}
+                                </div>
+                            {% endif %}
+                            <form method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <label class="form-label">Check In</label>
+                                    <input type="date" class="form-control" name="check_in" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Check Out</label>
+                                    <input type="date" class="form-control" name="check_out" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Guests</label>
+                                    <select class="form-select" name="guests" required>
+                                        <option value="1">1 Adult</option>
+                                        <option value="2">2 Adults</option>
+                                        <option value="3">3 Adults</option>
+                                        <option value="4">4 Guests</option>
+                                    </select>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-primary-custom">Book Now</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Jonggrand Hotel</h5>
+                    <p>Luxury, Comfort, and Excellence. Your home away from home.</p>
+                    <div class="mt-3">
+                        <a href="#" class="me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                        <li><a href="{% url 'events' %}">Events</a></li>
+                        <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Hotel Avenue, City, State</li>
+                        <li><i class="fas fa-phone me-2"></i> +123 456 7890</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@jonggrandhotel.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="text-center">
+                <small>&copy; 2025 Jonggrand Hotel. All Rights Reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
