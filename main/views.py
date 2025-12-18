@@ -45,6 +45,9 @@ def room_detail(request, slug):
         check_in = request.POST.get("check_in")
         check_out = request.POST.get("check_out")
         guests_str = request.POST.get("guests", "1")
+        guest_name = (request.POST.get("guest_name") or "").strip()
+        guest_phone = (request.POST.get("guest_phone") or "").strip()
+        guest_email = (request.POST.get("guest_email") or "").strip()
         try:
             guests = int(guests_str)
         except ValueError:
@@ -68,6 +71,11 @@ def room_detail(request, slug):
             context["error"] = "Selected guests exceed the room capacity."
             return render(request, "main/room-detail.html", context)
 
+        if not guest_name or not guest_phone or not guest_email:
+            print("[ROOM_DETAIL] Guest info missing", {"guest_name": guest_name, "guest_phone": guest_phone, "guest_email": guest_email})
+            context["error"] = "Please provide your full name, phone number, and email."
+            return render(request, "main/room-detail.html", context)
+
         if Booking.objects.filter(room=room, check_in__lt=co, check_out__gt=ci).exists():
             print("[ROOM_DETAIL] Overlap", {"room_id": room.id, "check_in": ci, "check_out": co})
             context["error"] = "This room is already booked for the selected dates."
@@ -85,6 +93,9 @@ def room_detail(request, slug):
             "guests": guests,
             "amount": str(total),
             "user_id": request.user.id if request.user.is_authenticated else None,
+            "guest_name": guest_name,
+            "guest_phone": guest_phone,
+            "guest_email": guest_email,
         }
         request.session.save()
         print("[ROOM_DETAIL] Intent stored", {"session_key": session_key})
@@ -139,6 +150,12 @@ def payment_init(request, reference):
             phone = getattr(user, "phone_number", "") or ""
         except User.DoesNotExist:
             pass
+    if payload.get("guest_name"):
+        name = payload.get("guest_name")
+    if payload.get("guest_email"):
+        email = payload.get("guest_email")
+    if payload.get("guest_phone"):
+        phone = payload.get("guest_phone")
     amount = float(payload.get("amount"))
     print("[PAYMENT_INIT] Render", {"reference": reference, "amount": amount})
     context = {
@@ -245,6 +262,9 @@ def _finalize_booking(request, tx_ref, amount_paid, currency):
         total_amount=expected_amount,
         status=Booking.STATUS_PAID,
         reference=tx_ref,
+        guest_name=payload.get("guest_name", ""),
+        guest_email=payload.get("guest_email", ""),
+        guest_phone=payload.get("guest_phone", ""),
     )
     try:
         del request.session[session_key]

@@ -50,6 +50,9 @@ class Booking(models.Model):
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
     reference = models.CharField(max_length=100, unique=True)
+    guest_name = models.CharField(max_length=150, blank=True, default="")
+    guest_email = models.EmailField(blank=True, default="")
+    guest_phone = models.CharField(max_length=20, blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

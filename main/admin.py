@@ -32,7 +32,9 @@ class RoomImageAdmin(admin.ModelAdmin):
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
-    list_display = ("reference", "room", "user", "check_in", "check_out", "guests", "total_amount", "status", "created_at")
-    search_fields = ("reference", "room__name", "user__username", "user__email")
+    list_display = ("reference", "room", "guest_name", "guest_phone", "guest_email", "check_in", "check_out", "guests", "total_amount", "status", "created_at")
+    search_fields = ("reference", "room__name", "guest_name", "guest_email", "guest_phone")
     list_filter = ("status", "room")
     autocomplete_fields = ("room", "user")
+    readonly_fields = ("reference", "created_at", "updated_at")
+    ordering = ("-created_at",)
