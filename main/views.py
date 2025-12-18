@@ -17,7 +17,7 @@ def home(request):
 
 
 def rooms(request):
-    rooms_qs = Room.objects.all()
+    rooms_qs = Room.objects.all().prefetch_related("images")
     return render(request, "main/rooms.html", {"rooms": rooms_qs})
 
 
@@ -38,8 +38,8 @@ def contact(request):
 
 
 def room_detail(request, slug):
-    room = get_object_or_404(Room, slug=slug)
-    context = {"room": room}
+    room = get_object_or_404(Room.objects.prefetch_related("images"), slug=slug)
+    context = {"room": room, "images": room.images.all(), "primary_image": room.get_primary_image()}
     if request.method == "POST":
         print("[ROOM_DETAIL] POST", {"room": room.slug})
         check_in = request.POST.get("check_in")

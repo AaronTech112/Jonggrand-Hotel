@@ -12,7 +12,7 @@ class CustomUserAdmin(BaseUserAdmin):
 
 class RoomImageInline(admin.TabularInline):
     model = RoomImage
-    extra = 0
+    extra = 2
 
 
 @admin.register(Room)

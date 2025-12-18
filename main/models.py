@@ -19,6 +19,10 @@ class Room(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_primary_image(self):
+        img = self.images.filter(is_primary=True).first()
+        return img or self.images.first()
 
 
 class RoomImage(models.Model):

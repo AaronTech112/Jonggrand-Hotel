@@ -60,18 +60,40 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <!-- Gallery Carousel -->
                     <div id="roomCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
                         <div class="carousel-inner rounded">
-                            <div class="carousel-item active">
-                                <img src="{% static 'assets/images/IMG-20251206-WA0004.jpg' %}" class="d-block w-100" alt="Deluxe Room View 1">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="{% static 'assets/images/IMG-20251206-WA0008.jpg' %}" class="d-block w-100" alt="Deluxe Room View 2">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="{% static 'assets/images/IMG-20251206-WA0009.jpg' %}" class="d-block w-100" alt="Deluxe Room View 3">
-                            </div>
+                            {% with images=room.images.all %}
+                            {% if images|length %}
+                                {% if primary_image %}
+                                    <div class="carousel-item active">
+                                        <img src="{{ primary_image.image.url }}" class="d-block w-100" alt="{{ room.name }} image">
+                                    </div>
+                                    {% for img in images %}
+                                        {% if img.id != primary_image.id %}
+                                            <div class="carousel-item">
+                                                <img src="{{ img.image.url }}" class="d-block w-100" alt="{{ room.name }} image">
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% else %}
+                                    {% for img in images %}
+                                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                            <img src="{{ img.image.url }}" class="d-block w-100" alt="{{ room.name }} image">
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            {% else %}
+                                <div class="carousel-item active">
+                                    <img src="{% static 'assets/images/IMG-20251206-WA0004.jpg' %}" class="d-block w-100" alt="{{ room.name }} image">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{% static 'assets/images/IMG-20251206-WA0008.jpg' %}" class="d-block w-100" alt="{{ room.name }} image">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{% static 'assets/images/IMG-20251206-WA0009.jpg' %}" class="d-block w-100" alt="{{ room.name }} image">
+                                </div>
+                            {% endif %}
+                            {% endwith %}
                         </div>
                         <button class="carousel-control-prev" type="button" data-bs-target="#roomCarousel" data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
