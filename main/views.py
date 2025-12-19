@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .models import Room, Booking, FeaturedRoom, EventRequest
+from .models import Room, Booking, FeaturedRoom, EventRequest, ContactRequest
 from decimal import Decimal
 import uuid
 from datetime import datetime
@@ -75,6 +75,28 @@ def about(request):
 def contact(request):
     return render(request, "main/contact.html")
 
+
+def contact_submit(request):
+    if request.method != "POST":
+        return redirect("contact")
+    name = (request.POST.get("name") or "").strip()
+    email = (request.POST.get("email") or "").strip()
+    subject = (request.POST.get("subject") or "").strip()
+    message = (request.POST.get("message") or "").strip()
+    if not name or not email or not subject or not message:
+        return render(request, "main/contact.html", {"error": "Please fill in all required fields."})
+    obj = ContactRequest.objects.create(
+        name=name,
+        email=email,
+        subject=subject,
+        message=message,
+    )
+    return redirect("contact_request_success", pk=obj.pk)
+
+
+def contact_request_success(request, pk):
+    obj = get_object_or_404(ContactRequest, pk=pk)
+    return render(request, "main/contact_request_success.html", {"request_obj": obj})
 
 def room_detail(request, slug):
     room = get_object_or_404(Room.objects.prefetch_related("images"), slug=slug)

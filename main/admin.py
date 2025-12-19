@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import CustomUser, Room, RoomImage, Booking
-from .models import FeaturedRoom, EventRequest
+from .models import FeaturedRoom, EventRequest, ContactRequest
 
 
 @admin.register(CustomUser)
@@ -53,4 +53,11 @@ class EventRequestAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "phone", "event_type", "event_date", "expected_guests", "status", "submitted_at")
     search_fields = ("name", "email", "phone", "event_type")
     list_filter = ("event_type", "status", "event_date")
+    ordering = ("-submitted_at",)
+
+
+@admin.register(ContactRequest)
+class ContactRequestAdmin(admin.ModelAdmin):
+    list_display = ("name", "email", "subject", "submitted_at")
+    search_fields = ("name", "email", "subject")
     ordering = ("-submitted_at",)
