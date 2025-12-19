@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import CustomUser, Room, RoomImage, Booking
+from .models import FeaturedRoom, EventRequest
 
 
 @admin.register(CustomUser)
@@ -29,6 +30,13 @@ class RoomImageAdmin(admin.ModelAdmin):
     list_display = ("room", "image", "is_primary", "created_at")
     list_filter = ("is_primary", "room")
 
+@admin.register(FeaturedRoom)
+class FeaturedRoomAdmin(admin.ModelAdmin):
+    list_display = ("room", "is_active", "order", "created_at")
+    list_filter = ("is_active",)
+    search_fields = ("room__name",)
+    autocomplete_fields = ("room",)
+    ordering = ("order", "-created_at")
 
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
@@ -38,3 +46,11 @@ class BookingAdmin(admin.ModelAdmin):
     autocomplete_fields = ("room", "user")
     readonly_fields = ("reference", "created_at", "updated_at")
     ordering = ("-created_at",)
+
+
+@admin.register(EventRequest)
+class EventRequestAdmin(admin.ModelAdmin):
+    list_display = ("name", "email", "phone", "event_type", "event_date", "expected_guests", "status", "submitted_at")
+    search_fields = ("name", "email", "phone", "event_type")
+    list_filter = ("event_type", "status", "event_date")
+    ordering = ("-submitted_at",)

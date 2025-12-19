@@ -62,3 +62,41 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.room.name} booking {self.reference}"
+
+
+class FeaturedRoom(models.Model):
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name="featured_entries")
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["order", "-created_at"]
+
+    def __str__(self):
+        return f"Featured: {self.room.name}"
+
+
+class EventRequest(models.Model):
+    STATUS_PENDING = "pending"
+    STATUS_REVIEWED = "reviewed"
+    STATUS_CHOICES = [
+        (STATUS_PENDING, "Pending"),
+        (STATUS_REVIEWED, "Reviewed"),
+    ]
+    name = models.CharField(max_length=150)
+    email = models.EmailField()
+    phone = models.CharField(max_length=20)
+    event_type = models.CharField(max_length=50)
+    event_date = models.DateField()
+    expected_guests = models.PositiveIntegerField()
+    message = models.TextField(blank=True)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default=STATUS_PENDING)
+    submitted_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-submitted_at"]
+
+    def __str__(self):
+        return f"{self.name} - {self.event_type} on {self.event_date}"

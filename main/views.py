@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .models import Room, Booking
+from .models import Room, Booking, FeaturedRoom, EventRequest
 from decimal import Decimal
 import uuid
 from datetime import datetime
@@ -13,7 +13,8 @@ from urllib.error import URLError, HTTPError
 
 
 def home(request):
-    return render(request, "main/index.html")
+    featured = FeaturedRoom.objects.filter(is_active=True).select_related("room").prefetch_related("room__images").order_by("order", "-created_at")
+    return render(request, "main/index.html", {"featured_rooms": featured})
 
 
 def rooms(request):
@@ -24,6 +25,44 @@ def rooms(request):
 def events(request):
     return render(request, "main/events.html")
 
+
+def event_request_submit(request):
+    if request.method != "POST":
+        return redirect("events")
+    name = (request.POST.get("eventName") or "").strip()
+    email = (request.POST.get("eventEmail") or "").strip()
+    phone = (request.POST.get("eventPhone") or "").strip()
+    event_type = (request.POST.get("eventType") or "").strip()
+    event_date_str = (request.POST.get("eventDate") or "").strip()
+    guests_str = (request.POST.get("eventGuests") or "").strip()
+    message = (request.POST.get("eventMessage") or "").strip()
+    if not name or not email or not phone or not event_type or not event_date_str:
+        return render(request, "main/events.html", {"error": "Please fill in all required fields."})
+    try:
+        guests = int(guests_str) if guests_str else 0
+        if guests < 0:
+            guests = 0
+    except ValueError:
+        guests = 0
+    try:
+        event_date = datetime.strptime(event_date_str, "%Y-%m-%d").date()
+    except Exception:
+        return render(request, "main/events.html", {"error": "Please provide a valid event date."})
+    req = EventRequest.objects.create(
+        name=name,
+        email=email,
+        phone=phone,
+        event_type=event_type,
+        event_date=event_date,
+        expected_guests=guests,
+        message=message,
+    )
+    return redirect("event_request_success", pk=req.pk)
+
+
+def event_request_success(request, pk):
+    obj = get_object_or_404(EventRequest, pk=pk)
+    return render(request, "main/event_request_success.html", {"request_obj": obj})
 
 def gallery(request):
     return render(request, "main/gallery.html")

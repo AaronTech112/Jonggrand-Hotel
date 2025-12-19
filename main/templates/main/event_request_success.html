@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Request Received | Jonggrand Hotel</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'assets/images/logo.png' %}" alt="Jonggrand Hotel Logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'rooms' %}">Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'events' %}">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'gallery' %}">Gallery</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contact' %}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="section-padding">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="card shadow border-0">
+                        <div class="card-body p-4 text-center">
+                            <h3 class="mb-3 text-success">Request Submitted</h3>
+                            <p class="text-muted">Thank you{% if request_obj.name %}, {{ request_obj.name }}{% endif %}. Your event request has been received. Our team will contact you shortly.</p>
+                            <div class="mt-4">
+                                <h5>Contact the hotel</h5>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-map-marker-alt me-2"></i> Yohanna Dalyop Avenue, opposite fire service Bukuru Express. Jos</li>
+                                    <li><i class="fas fa-phone me-2"></i> +2349028808131 ,  +2349136818825</li>
+                                    <li><i class="fas fa-envelope me-2"></i> jonggrandhotel@gmail.com</li>
+                                </ul>
+                            </div>
+                            <div class="mt-4">
+                                <a href="{% url 'events' %}" class="btn btn-outline-custom">Back to Events</a>
+                                <a href="{% url 'home' %}" class="btn btn-primary-custom ms-2">Go Home</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5>Jonggrand Hotel</h5>
+                    <p>Luxury, Comfort, and Excellence. Your home away from home.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'rooms' %}">Rooms</a></li>
+                        <li><a href="{% url 'events' %}">Events</a></li>
+                        <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                        <li><a href="{% url 'contact' %}">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5>Contact Info</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Yohanna Dalyop Avenue, opposite fire service Bukuru Express. Jos</li>
+                        <li><i class="fas fa-phone me-2"></i> +2349028808131 ,  +2349136818825</li>
+                        <li><i class="fas fa-envelope me-2"></i> jonggrandhotel@gmail.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="bg-secondary">
+            <div class="text-center">
+                <small>&copy; 2025 Jonggrand Hotel. All Rights Reserved.</small>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

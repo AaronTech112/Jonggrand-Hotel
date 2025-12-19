@@ -26,10 +26,9 @@
       "description": "Luxury hotel with conference center and premium amenities.",
       "address": {
         "@type": "PostalAddress",
-        "streetAddress": "123 Hotel Avenue", 
-        "addressLocality": "City Name",
-        "addressRegion": "State",
-        "postalCode": "12345",
+        "streetAddress": "Yohanna Dalyop Avenue, opposite fire service Bukuru Express.",
+        "addressLocality": "Jos",
+        "addressRegion": "Plateau",
         "addressCountry": "NG"
       },
       "priceRange": "$$$"
@@ -106,7 +105,6 @@
 
     <!-- Main Content -->
     <main id="main-content">
-        <!-- Featured Rooms -->
         <section class="section-padding">
             <div class="container">
                 <div class="section-title" data-animate="fade-up">
@@ -115,75 +113,81 @@
                     <p class="mt-3 text-muted">Choose from our variety of premium accommodations.</p>
                 </div>
                 <div class="row">
-                    <!-- Room 1 -->
-                    <div class="col-md-4 mb-4">
-                        <div class="card h-100" data-animate="fade-up" data-delay="0">
-                            <img src="{% static 'assets/images/IMG-20251206-WA0004.jpg' %}" class="card-img-top" alt="Deluxe Room">
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="card-title mb-0">Deluxe Room</h5>
-                                    <span class="badge bg-secondary-custom">$150/night</span>
-                                </div>
-                                <p class="card-text text-muted">Spacious room with king size bed and city view.</p>
-                                <ul class="list-unstyled small text-muted mb-3">
-                                    <li><i class="fas fa-wifi me-2"></i> Free Wifi</li>
-                                    <li><i class="fas fa-tv me-2"></i> Smart TV</li>
-                                    <li><i class="fas fa-coffee me-2"></i> Breakfast Included</li>
-                                </ul>
-                                <div class="d-flex justify-content-between">
-                                    <a href="{% url 'rooms' %}" class="btn btn-outline-custom btn-sm">View Details</a>
-                                    <a href="{% url 'rooms' %}" class="btn btn-primary-custom btn-sm">Book Now</a>
+                    {% if featured_rooms %}
+                        {% for feat in featured_rooms %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100" data-animate="fade-up">
+                                {% with img=feat.room.get_primary_image %}
+                                {% if img %}
+                                <img src="{{ img.image.url }}" class="card-img-top" alt="{{ feat.room.name }}">
+                                {% else %}
+                                <img src="{% static 'assets/images/IMG-20251206-WA0004.jpg' %}" class="card-img-top" alt="{{ feat.room.name }}">
+                                {% endif %}
+                                {% endwith %}
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <h5 class="card-title mb-0">{{ feat.room.name }}</h5>
+                                        <span class="badge bg-secondary-custom">₦{{ feat.room.price_per_night }}/night</span>
+                                    </div>
+                                    <p class="card-text text-muted">{{ feat.room.description }}</p>
+                                    <ul class="list-unstyled small text-muted mb-3">
+                                        <li><i class="fas fa-users me-2"></i> {{ feat.room.max_guests }} Guests</li>
+                                    </ul>
+                                    <div class="d-flex justify-content-between">
+                                        <a href="{% url 'room_detail' feat.room.slug %}" class="btn btn-outline-custom btn-sm">View Details</a>
+                                        <a href="{% url 'room_detail' feat.room.slug %}" class="btn btn-primary-custom btn-sm">Book Now</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-12">
+                            <p class="text-muted text-center">No featured rooms yet. Check back soon.</p>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="text-center mt-4">
+                    <a href="{% url 'rooms' %}" class="btn btn-outline-custom">View All Rooms</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-padding bg-light">
+            <div class="container">
+                <div class="section-title" data-animate="fade-up">
+                    <h2>Showcase Highlights</h2>
+                    <div class="line"></div>
+                    <p class="mt-3 text-muted">A glimpse of our ambiance and style.</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100" data-animate="fade-up">
+                            <img src="{% static 'assets/images/IMG-20251206-WA0004.jpg' %}" class="card-img-top" alt="Deluxe Room">
+                            <div class="card-body">
+                                <h5 class="card-title mb-2">Deluxe Room</h5>
+                                <p class="card-text text-muted">Spacious room with king size bed and city view.</p>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Room 2 -->
                     <div class="col-md-4 mb-4">
                         <div class="card h-100" data-animate="fade-up" data-delay="150">
                             <img src="{% static 'assets/images/IMG-20251206-WA0005.jpg' %}" class="card-img-top" alt="Executive Suite">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="card-title mb-0">Executive Suite</h5>
-                                    <span class="badge bg-secondary-custom">$250/night</span>
-                                </div>
+                                <h5 class="card-title mb-2">Executive Suite</h5>
                                 <p class="card-text text-muted">Luxury suite with separate living area and premium amenities.</p>
-                                <ul class="list-unstyled small text-muted mb-3">
-                                    <li><i class="fas fa-wifi me-2"></i> Free Wifi</li>
-                                    <li><i class="fas fa-bath me-2"></i> Jacuzzi</li>
-                                    <li><i class="fas fa-concierge-bell me-2"></i> Room Service</li>
-                                </ul>
-                                <div class="d-flex justify-content-between">
-                                    <a href="{% url 'rooms' %}" class="btn btn-outline-custom btn-sm">View Details</a>
-                                    <a href="{% url 'rooms' %}" class="btn btn-primary-custom btn-sm">Book Now</a>
-                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Room 3 -->
                     <div class="col-md-4 mb-4">
                         <div class="card h-100" data-animate="fade-up" data-delay="300">
                             <img src="{% static 'assets/images/IMG-20251206-WA0006.jpg' %}" class="card-img-top" alt="Family Room">
                             <div class="card-body">
-                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                    <h5 class="card-title mb-0">Family Room</h5>
-                                    <span class="badge bg-secondary-custom">$200/night</span>
-                                </div>
+                                <h5 class="card-title mb-2">Family Room</h5>
                                 <p class="card-text text-muted">Perfect for families, featuring two queen beds and extra space.</p>
-                                <ul class="list-unstyled small text-muted mb-3">
-                                    <li><i class="fas fa-wifi me-2"></i> Free Wifi</li>
-                                    <li><i class="fas fa-users me-2"></i> Sleeps 4</li>
-                                    <li><i class="fas fa-gamepad me-2"></i> Kids Area Access</li>
-                                </ul>
-                                <div class="d-flex justify-content-between">
-                                    <a href="{% url 'rooms' %}" class="btn btn-outline-custom btn-sm">View Details</a>
-                                    <a href="{% url 'rooms' %}" class="btn btn-primary-custom btn-sm">Book Now</a>
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="text-center mt-4">
-                    <a href="{% url 'rooms' %}" class="btn btn-outline-custom">View All Rooms</a>
                 </div>
             </div>
         </section>
@@ -281,9 +285,9 @@
                 <div class="col-md-4 mb-4">
                     <h5>Contact Info</h5>
                     <ul class="list-unstyled">
-                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Hotel Avenue, City, State</li>
-                        <li><i class="fas fa-phone me-2"></i> +123 456 7890</li>
-                        <li><i class="fas fa-envelope me-2"></i> info@jonggrandhotel.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i> Yohanna Dalyop Avenue, opposite fire service Bukuru Express. Jos</li>
+                        <li><i class="fas fa-phone me-2"></i> +2349028808131 ,  +2349136818825</li>
+                        <li><i class="fas fa-envelope me-2"></i> jonggrandhotel@gmail.com</li>
                     </ul>
                 </div>
             </div>
